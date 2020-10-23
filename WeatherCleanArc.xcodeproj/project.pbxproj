@@ -92,8 +92,6 @@
 		45262AEA253B3C7C00491A68 = {
 			isa = PBXGroup;
 			children = (
-				454876782541C3AC00D3C03A /* WeatherEntity+CoreDataClass.swift */,
-				454876792541C3AC00D3C03A /* WeatherEntity+CoreDataProperties.swift */,
 				45262AF5253B3C7C00491A68 /* WeatherCleanArc */,
 				45262AF4253B3C7C00491A68 /* Products */,
 			);
@@ -110,6 +108,7 @@
 		45262AF5253B3C7C00491A68 /* WeatherCleanArc */ = {
 			isa = PBXGroup;
 			children = (
+				4571FA97254380E100493C5F /* Model */,
 				4565FED1253E1FE0003F53CB /* Extensions */,
 				456BE9DB253C347200490695 /* SimulationData */,
 				455CB875253F222E004AB15C /* Builder */,
@@ -231,6 +230,15 @@
 				456BE9DC253C348F00490695 /* data.json */,
 			);
 			path = SimulationData;
+			sourceTree = "<group>";
+		};
+		4571FA97254380E100493C5F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				454876782541C3AC00D3C03A /* WeatherEntity+CoreDataClass.swift */,
+				454876792541C3AC00D3C03A /* WeatherEntity+CoreDataProperties.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
