@@ -18,7 +18,7 @@ protocol UserLoginDataStore {
 class UserLoginInteractor: UserLoginBusinessLogic, UserLoginDataStore {
     
     var presenter: UserLoginPresentationLogic?
-    var worker: UserLoginWorker?
+    private var worker: UserLoginWorker?
     //var name: String = ""
     
     // MARK: Do something

@@ -10,23 +10,7 @@ import CoreData
 
 final class MainScreenWorker {
     
-    var networkService: NetworkServiceProtocol!
-    private var weatherData: [WeatherEntity] = []
-    
-    
-    func execute(city: String, id: Int64, complitionHandler: @escaping (Result<String, Error>) -> ()) {
-        networkService.getJSONData(city) { (result) in
-            switch result {
-            case .success(var weather):
-                weather.id = id
-                self.createUpdateWeather(weather)
-                complitionHandler(.success(weather.fullInfo))
-            case .failure(let error):
-                complitionHandler(.failure(error))
-            }
-        }
-    }
-    
+    //MARK: - Local Files
     func loadJSONFromFile(fileName: String, extensionOfFile: String) -> [MainScreen.DefaultListOfCities.CityInfo] {
         var cities: [MainScreen.DefaultListOfCities.CityInfo] = []
         if let pathToJSONFile = Bundle.main.url(forResource: fileName, withExtension: extensionOfFile) {
@@ -44,7 +28,7 @@ final class MainScreenWorker {
     
     
     //MARK: - CoreData
-    private func createUpdateWeather(_ input: Weather) {
+    func createUpdateWeather(_ input: Weather) {
         
         let finded = fineBy(predicate: "weatherId == \(input.id)")
         
@@ -87,32 +71,5 @@ final class MainScreenWorker {
         return result
         
     }
-    
-    
-//    private func deleteWeather() {
-//
-//        allData = []
-//        let managedContext = PersistenceService.context
-//
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "")
-//
-//        do {
-//            let test = try managedContext.fetch(fetchRequest)
-//
-//            let objectToDelete = test as! [NSManagedObject]
-//            for one in objectToDelete {
-//                managedContext.delete(one)
-//            }
-//
-//            do {
-//                try managedContext.save()
-//            } catch {
-//                print(error)
-//            }
-//
-//        } catch {
-//            print(error)
-//        }
-//    }
 
 }

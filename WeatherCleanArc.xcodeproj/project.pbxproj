@@ -32,7 +32,14 @@
 		456BE9D8253C330100490695 /* MainScreenInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BE9D2253C330100490695 /* MainScreenInteractor.swift */; };
 		456BE9EA253C89ED00490695 /* CityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BE9E8253C89ED00490695 /* CityCell.swift */; };
 		4571FA8B2542FD5A00493C5F /* UserLoginVCExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA8A2542FD5A00493C5F /* UserLoginVCExt.swift */; };
-		4571FA932543730F00493C5F /* NetworkCheckingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA922543730F00493C5F /* NetworkCheckingService.swift */; };
+		4571FAA02543824200493C5F /* MapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9A2543824200493C5F /* MapPresenter.swift */; };
+		4571FAA12543824200493C5F /* MapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9B2543824200493C5F /* MapWorker.swift */; };
+		4571FAA22543824200493C5F /* MapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9C2543824200493C5F /* MapRouter.swift */; };
+		4571FAA32543824200493C5F /* MapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9D2543824200493C5F /* MapModels.swift */; };
+		4571FAA42543824200493C5F /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9E2543824200493C5F /* MapViewController.swift */; };
+		4571FAA52543824200493C5F /* MapInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FA9F2543824200493C5F /* MapInteractor.swift */; };
+		4571FAA925438BD400493C5F /* MapConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571FAA825438BD400493C5F /* MapConfigurator.swift */; };
+		457A0D9225449AEB005D4C74 /* NetworkWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A0D9125449AEB005D4C74 /* NetworkWorker.swift */; };
 		4598F1612541E3C900E5CE6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45262AFC253B3C7C00491A68 /* Main.storyboard */; };
 		4598F1662541E41600E5CE6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45262B02253B3C7E00491A68 /* Assets.xcassets */; };
 		4598F1682541E41E00E5CE6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45262B04253B3C7E00491A68 /* LaunchScreen.storyboard */; };
@@ -74,7 +81,14 @@
 		456BE9E8253C89ED00490695 /* CityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCell.swift; sourceTree = "<group>"; };
 		456BEA1A253CD2EE00490695 /* CityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CityCell.xib; sourceTree = "<group>"; };
 		4571FA8A2542FD5A00493C5F /* UserLoginVCExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginVCExt.swift; sourceTree = "<group>"; };
-		4571FA922543730F00493C5F /* NetworkCheckingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkCheckingService.swift; sourceTree = "<group>"; };
+		4571FA9A2543824200493C5F /* MapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPresenter.swift; sourceTree = "<group>"; };
+		4571FA9B2543824200493C5F /* MapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapWorker.swift; sourceTree = "<group>"; };
+		4571FA9C2543824200493C5F /* MapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouter.swift; sourceTree = "<group>"; };
+		4571FA9D2543824200493C5F /* MapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModels.swift; sourceTree = "<group>"; };
+		4571FA9E2543824200493C5F /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		4571FA9F2543824200493C5F /* MapInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapInteractor.swift; sourceTree = "<group>"; };
+		4571FAA825438BD400493C5F /* MapConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapConfigurator.swift; sourceTree = "<group>"; };
+		457A0D9125449AEB005D4C74 /* NetworkWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkWorker.swift; sourceTree = "<group>"; };
 		4598F1742541F60100E5CE6E /* LimitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,7 +173,6 @@
 			children = (
 				4548767525416A5600D3C03A /* PersistenceService.swift */,
 				4548767225416A3E00D3C03A /* NetworkService.swift */,
-				4571FA922543730F00493C5F /* NetworkCheckingService.swift */,
 				4598F1742541F60100E5CE6E /* LimitService.swift */,
 			);
 			name = Services;
@@ -168,8 +181,9 @@
 		455CB875253F222E004AB15C /* Builder */ = {
 			isa = PBXGroup;
 			children = (
-				455CB87A253F2374004AB15C /* MainScreenConfigurator.swift */,
 				455CB876253F2291004AB15C /* UserLoginConfigurator.swift */,
+				455CB87A253F2374004AB15C /* MainScreenConfigurator.swift */,
+				4571FAA825438BD400493C5F /* MapConfigurator.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -177,6 +191,8 @@
 		455CB87E253F24C7004AB15C /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				457A0D9025449ACD005D4C74 /* Shared */,
+				4571FA99254381CA00493C5F /* MapScreenScene */,
 				456BE9CC253C325000490695 /* MainScreenScene */,
 				45262B14253B3CE600491A68 /* UserLoginScene */,
 			);
@@ -239,6 +255,27 @@
 				454876792541C3AC00D3C03A /* WeatherEntity+CoreDataProperties.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		4571FA99254381CA00493C5F /* MapScreenScene */ = {
+			isa = PBXGroup;
+			children = (
+				4571FA9A2543824200493C5F /* MapPresenter.swift */,
+				4571FA9B2543824200493C5F /* MapWorker.swift */,
+				4571FA9C2543824200493C5F /* MapRouter.swift */,
+				4571FA9D2543824200493C5F /* MapModels.swift */,
+				4571FA9E2543824200493C5F /* MapViewController.swift */,
+				4571FA9F2543824200493C5F /* MapInteractor.swift */,
+			);
+			path = MapScreenScene;
+			sourceTree = "<group>";
+		};
+		457A0D9025449ACD005D4C74 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				457A0D9125449AEB005D4C74 /* NetworkWorker.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -319,15 +356,23 @@
 				4548767325416A3E00D3C03A /* NetworkService.swift in Sources */,
 				45262B30253B412200491A68 /* UserLoginInteractor.swift in Sources */,
 				4571FA8B2542FD5A00493C5F /* UserLoginVCExt.swift in Sources */,
+				4571FAA52543824200493C5F /* MapInteractor.swift in Sources */,
 				4598F1752541F60100E5CE6E /* LimitService.swift in Sources */,
 				456BE9EA253C89ED00490695 /* CityCell.swift in Sources */,
 				45262AF7253B3C7C00491A68 /* AppDelegate.swift in Sources */,
 				455CB886253F5C86004AB15C /* CustomTextView.swift in Sources */,
+				4571FAA32543824200493C5F /* MapModels.swift in Sources */,
 				456BE9D5253C330100490695 /* MainScreenRouter.swift in Sources */,
 				456BE9D6253C330100490695 /* MainScreenModels.swift in Sources */,
+				4571FAA12543824200493C5F /* MapWorker.swift in Sources */,
+				4571FAA925438BD400493C5F /* MapConfigurator.swift in Sources */,
 				456BE9D8253C330100490695 /* MainScreenInteractor.swift in Sources */,
+				4571FAA42543824200493C5F /* MapViewController.swift in Sources */,
 				45262AF9253B3C7C00491A68 /* SceneDelegate.swift in Sources */,
 				4548767B2541C3AC00D3C03A /* WeatherEntity+CoreDataProperties.swift in Sources */,
+				457A0D9225449AEB005D4C74 /* NetworkWorker.swift in Sources */,
+				4571FAA02543824200493C5F /* MapPresenter.swift in Sources */,
+				4571FAA22543824200493C5F /* MapRouter.swift in Sources */,
 				4548767A2541C3AC00D3C03A /* WeatherEntity+CoreDataClass.swift in Sources */,
 				45262B2E253B412200491A68 /* UserLoginModels.swift in Sources */,
 				45262B2C253B412200491A68 /* UserLoginWorker.swift in Sources */,
@@ -338,7 +383,6 @@
 				45262B2D253B412200491A68 /* UserLoginRouter.swift in Sources */,
 				454876462541594100D3C03A /* WeatherDataModel.xcdatamodeld in Sources */,
 				456BE9D3253C330100490695 /* MainScreenPresenter.swift in Sources */,
-				4571FA932543730F00493C5F /* NetworkCheckingService.swift in Sources */,
 				455CB87B253F2374004AB15C /* MainScreenConfigurator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

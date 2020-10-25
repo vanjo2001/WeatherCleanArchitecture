@@ -6,77 +6,132 @@
 //
 
 import UIKit
+import MapKit
 
 protocol MainScreenBusinessLogic {
     func selectRow(request: MainScreen.DefaultListOfCities.Request)
 }
 
 protocol MainScreenDataStore {
-    //var name: String { get set }
+    var coordinate: CLLocationCoordinate2D? { get set }
+    var weatherByCoordinate: Weather? { get set }
+//    var cityByCoordinate: MainScreen.DefaultListOfCities.CityInfo? { get set }
 }
 
 class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
+    
+    var weatherByCoordinate: Weather? {
+        didSet {
+            print(weatherByCoordinate ?? "nil")
+        }
+    }
+    
+    var coordinate: CLLocationCoordinate2D? {
+        didSet {
+            getWeatherByCoordinate()
+            print("new \(coordinate ?? CLLocationCoordinate2D())")
+        }
+    }
+    
     var presenter: MainScreenPresentationLogic?
     var worker: MainScreenWorker?
+    var networkWorker: NetworkWorker?
     
-    //var name: String = ""
     
+    init(worker: MainScreenWorker = MainScreenWorker(), networkWorker: NetworkWorker = NetworkWorker()) {
+        self.worker = worker
+        self.networkWorker = networkWorker
+    }
     
     // MARK: Do something
     
     func selectRow(request: MainScreen.DefaultListOfCities.Request) {
         worker = MainScreenWorker()
-        worker?.networkService = NetworkService()
+        networkWorker = NetworkWorker()
         
         var cities: [MainScreen.DefaultListOfCities.CityInfo]!
         
+        
+        //Load from file
         cities = worker?.loadJSONFromFile(fileName: "data", extensionOfFile: "json")
         
+        //Append city from map if exists
+        if let city = request.cityByCoordinate {
+            cities.append(city)
+        }
+        
+        
+        //Check limit
         LimitService.shared.loadDataIfNeeded(refreshTime: 1, keyIndex: String(request.indexRow)) { (status) in
+            
+            //Limit is not targeted
             if status {
                 
                 let current = cities[request.indexRow]
-                worker?.networkService.city = current.city
+                networkWorker?.networkService.way = .byCity(city: current.city)
                 
                 var response = packResponse(request: request, cities: cities, loadedWeather: nil)
                 
-                self.worker?.execute(city: current.city, id: Int64(request.indexRow)) { data in
+                self.networkWorker?.execute(id: Int64(request.indexRow)) { data in
                     
                     LimitService.shared.addLimit(keyIndex: String(request.indexRow))
                     
                     switch (data) {
-                    case .success(let str):
-                        response.fullInfo.append(str)
-                        self.presenter?.presentSomething(response: response)
+                    case .success(var weatherWithId):
+                        
+                        guard let id = weatherWithId.id else { return }
+                        
+                        weatherWithId.weather.id = id
+                        //Create or update (Core Data)
+                        self.worker?.createUpdateWeather(weatherWithId.weather)
+                        
+                        //Response if success
+                        response.weather = weatherWithId.weather
+                        self.presenter?.presentWeatherInfo(response: response)
                     case .failure(let error):
-                        response.fullInfo.append(error.localizedDescription)
-                        self.presenter?.presentSomething(response: response)
+                        
+                        //Response if error
+                        response.error = error
+                        self.presenter?.presentWeatherInfo(response: response)
                     }
                 }
                 
+                self.presenter?.presentWeatherInfo(response: response)
                 
-                self.presenter?.presentSomething(response: response)
+                //Limit is targeted
             } else {
                 let weather = Weather.convert(weather: worker?.fineBy(predicate: "weatherId == \(request.indexRow)"))
                 
-                presenter?.presentSomething(response: packResponse(request: request, cities: cities, loadedWeather: weather))
+                presenter?.presentWeatherInfo(response: packResponse(request: request, cities: cities, loadedWeather: weather))
                 
                 print("load from core data or something)")
             }
         }
     }
     
+    func getWeatherByCoordinate() {
+        
+        networkWorker?.networkService.way = .byCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
+        networkWorker?.execute(id: nil, complitionHandler: { result in
+            switch result {
+            case .success(let weatherWithId):
+                self.presenter?.presentWeatherByCoordinate(response: MainScreen.FetchWeather.Response(weatherByCity: weatherWithId.weather))
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+    
+    
     func packResponse(request: MainScreen.DefaultListOfCities.Request,
                       cities: [MainScreen.DefaultListOfCities.CityInfo],
                       loadedWeather: Weather?) -> MainScreen.DefaultListOfCities.Response {
         
         let current = cities[request.indexRow]
-        let fullInfo = "City: \(current.city)\nDescription: \(current.description)\nCountry code: \(current.code)"
+        let _ = "City: \(current.city)\nDescription: \(current.description)\nCountry code: \(current.code)"
         
-        var response = MainScreen.DefaultListOfCities.Response(cities: cities, fullInfo: fullInfo)
-        if let loaded = loadedWeather {
-            response.fullInfo += loaded.fullInfo
-        }
+        let response = MainScreen.DefaultListOfCities.Response(cities: cities, currentCity: current, weather: loadedWeather)
+
         return response
     }
     

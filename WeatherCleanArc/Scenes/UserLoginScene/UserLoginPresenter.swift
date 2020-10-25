@@ -18,6 +18,6 @@ class UserLoginPresenter: UserLoginPresentationLogic {
     
     func presentSomething(response: UserLogin.CheckFields.Response) {
         let viewModel = UserLogin.CheckFields.ViewModel(status: response.status)
-        viewController?.displaySomething(viewModel: viewModel)
+        viewController?.reflectLoginStatus(viewModel: viewModel)
     }
 }

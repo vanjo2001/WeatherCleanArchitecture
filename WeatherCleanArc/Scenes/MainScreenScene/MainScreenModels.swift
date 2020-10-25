@@ -14,17 +14,25 @@ enum MainScreen {
         
         struct Request {
             var indexRow: Int
+            var cityByCoordinate: CityInfo?
         }
         
         struct Response: Decodable {
             var cities: [CityInfo]
-            var fullInfo: String
+            var currentCity: CityInfo?
+            var weather: Weather?
+            var error: Error?
+            
+            private enum CodingKeys: String, CodingKey {
+                case cities
+            }
         }
         
         struct ViewModel: Decodable {
-            var cities: [CityInfo]
+            var cities: [CityInfo]?
             var fullInfo: String
         }
+        
         
         struct CityInfo: Decodable {
             var city: String
@@ -38,24 +46,20 @@ enum MainScreen {
     enum FetchWeather {
         
         struct Request {
-            var city: String
         }
         
         struct Response {
-            var weather: Weather
+            var weatherByCity: Weather
             
             struct Weather: Decodable {
                 var id: Int64 = 0
                 var cod: String?
                 var message: Int?
                 var list: [MainInfo]
-                
-                var fullInfo: String {
-                    return "\n\nTemperature equal: \(list.first?.main.temp ?? -1)\n\nDescription: \(list.first?.weather.first?.description ?? "nil")"
-                }
+                var city: City?
                 
                 private enum CodingKeys: String, CodingKey {
-                    case cod, message, list
+                    case cod, message, list, city
                 }
                 
                 static func convert(weather: WeatherEntity?) -> Self? {
@@ -69,6 +73,11 @@ enum MainScreen {
                     return nil
                 }
                 
+            }
+            
+            struct City: Decodable {
+                var name: String
+                var country: String
             }
             
             struct MainInfo: Decodable {
@@ -87,7 +96,6 @@ enum MainScreen {
         
         struct ViewModel {
         }
-        
         
     }
 }

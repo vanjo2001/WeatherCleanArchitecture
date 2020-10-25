@@ -21,7 +21,7 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="tapLoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VXp-WY-CUZ"/>
-                                    <segue destination="f4k-bS-4j1" kind="show" id="79c-lc-EXK"/>
+                                    <segue destination="f4k-bS-4j1" kind="show" identifier="MainScreen" id="79c-lc-EXK"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="MKk-vp-sAe">
@@ -79,7 +79,7 @@
         <!--Main Screen View Controller-->
         <scene sceneID="LKB-ve-vVQ">
             <objects>
-                <viewController id="f4k-bS-4j1" customClass="MainScreenViewController" customModule="WeatherCleanArc" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainScreenViewController" id="f4k-bS-4j1" customClass="MainScreenViewController" customModule="WeatherCleanArc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ExS-F1-PvF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -114,7 +114,13 @@
                             <constraint firstItem="SQK-j4-Ebq" firstAttribute="top" secondItem="hWe-ep-T5M" secondAttribute="bottom" constant="8" symbolic="YES" id="jJF-CR-8K2"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="yn2-Z1-AQ5"/>
+                    <navigationItem key="navigationItem" id="yn2-Z1-AQ5">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="NhM-H4-Hw3">
+                            <connections>
+                                <segue destination="CSA-Kq-iKV" kind="show" identifier="Map" id="SB9-jY-48n"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="hieghtInfoViewConstraint" destination="4pD-ol-nvk" id="evk-LS-jfw"/>
                         <outlet property="infoTextView" destination="hWe-ep-T5M" id="FCB-Jn-TBv"/>
@@ -124,6 +130,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4D7-BU-ks9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1764" y="88"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="gaU-Go-lRm">
+            <objects>
+                <viewController storyboardIdentifier="MapViewController" id="CSA-Kq-iKV" customClass="MapViewController" customModule="WeatherCleanArc" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QiH-cf-xN8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="gPS-oV-DSs">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            </mapView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="PLv-D1-uRv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gPS-oV-DSs" firstAttribute="top" secondItem="PLv-D1-uRv" secondAttribute="top" id="3NM-Gd-kBg"/>
+                            <constraint firstItem="gPS-oV-DSs" firstAttribute="trailing" secondItem="PLv-D1-uRv" secondAttribute="trailing" id="OZd-xj-SA2"/>
+                            <constraint firstItem="gPS-oV-DSs" firstAttribute="bottom" secondItem="PLv-D1-uRv" secondAttribute="bottom" id="eeM-dX-8Z0"/>
+                            <constraint firstItem="gPS-oV-DSs" firstAttribute="leading" secondItem="PLv-D1-uRv" secondAttribute="leading" id="hHt-zA-OW5"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="RVd-y3-aot"/>
+                    <connections>
+                        <outlet property="mapView" destination="gPS-oV-DSs" id="PYI-1X-8PB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UBL-KX-vPe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2682.608695652174" y="87.723214285714278"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2Hb-QX-gss">

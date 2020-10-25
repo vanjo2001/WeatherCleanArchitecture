@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation.CLLocation
 
 typealias Weather = MainScreen.FetchWeather.Response.Weather
 typealias WeatherComplition = (Result<Weather, Error>) -> ()
@@ -15,9 +16,19 @@ typealias WeatherComplition = (Result<Weather, Error>) -> ()
 
 protocol NetworkServiceProtocol: class {
 //    associatedtype Weather
-    func getJSONData(_ city: String, completionHandler: @escaping WeatherComplition)
+    func getJSONData(completionHandler: @escaping WeatherComplition)
     var link: String { get set }
-    var city: String { get set }
+    var way: Way { get set }
+}
+
+enum Way {
+    case byCity(city: String)
+    case byCoordinate(coordinate: CLLocationCoordinate2D)
+}
+
+enum UnitOfMeasurement: String {
+    case metric     = "metric"
+    case imperial   = "imperial"
 }
 
 
@@ -25,10 +36,10 @@ final class NetworkService: NetworkServiceProtocol {
     
 //    typealias Weather = MainScreen.FetchWeather.Response.Weather
     
-    
     static let key = "6485002c6ffd1d04876d0de28d75f187"
+    static let unit: UnitOfMeasurement = .metric
     
-    var city: String = "Minsk" {
+    var way: Way = .byCity(city: "Minsk") {
         didSet {
             prepareLink()
         }
@@ -36,13 +47,20 @@ final class NetworkService: NetworkServiceProtocol {
     
     internal var link: String = ""
     
-    func prepareLink() {
-        let copyCity = city.replacingOccurrences(of: " ", with: "%20")
-        link = "http://api.openweathermap.org/data/2.5/forecast?q=\(copyCity)&appid=\(NetworkService.key)"
+    private func prepareLink() {
+        
+        switch way {
+        case .byCity(var city):
+            city = city.replacingOccurrences(of: " ", with: "%20")
+            link = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&units=\(NetworkService.unit.rawValue)&appid=\(NetworkService.key)"
+        case .byCoordinate(let coordinate):
+            link = "http://api.openweathermap.org/data/2.5/forecast?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(NetworkService.key)"
+            print(coordinate)
+        }
         print(link)
     }
     
-    func getJSONData(_ city: String, completionHandler: @escaping WeatherComplition) {
+    func getJSONData(completionHandler: @escaping WeatherComplition) {
         let session = URLSession.shared
         
         prepareLink()
@@ -85,8 +103,6 @@ final class NetworkService: NetworkServiceProtocol {
             
             task.resume()
         }
-        
-        
         
     }
     

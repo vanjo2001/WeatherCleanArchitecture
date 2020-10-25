@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserLoginDisplayLogic: class {
-    func displaySomething(viewModel: UserLogin.CheckFields.ViewModel)
+    func reflectLoginStatus(viewModel: UserLogin.CheckFields.ViewModel)
 }
 
 final class UserLoginViewController: UIViewController, UserLoginDisplayLogic {
@@ -86,10 +86,7 @@ final class UserLoginViewController: UIViewController, UserLoginDisplayLogic {
     
     // MARK: Do something
     
-    //@IBOutlet weak var nameTextField: UITextField!
-    
-    
-    func displaySomething(viewModel: UserLogin.CheckFields.ViewModel) {
+    func reflectLoginStatus(viewModel: UserLogin.CheckFields.ViewModel) {
         //nameTextField.text = viewModel.name
         if viewModel.status {
             loginButton.isEnabled = true

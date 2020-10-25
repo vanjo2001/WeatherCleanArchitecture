@@ -8,14 +8,17 @@
 import UIKit
 
 protocol MainScreenDisplayLogic: class {
+    func displayWeatherByCoordinate(viewModel: MainScreen.DefaultListOfCities.ViewModel)
     func displaySomething(viewModel: MainScreen.DefaultListOfCities.ViewModel)
 }
 
 class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
+    
     var interactor: MainScreenBusinessLogic?
     var router: (NSObjectProtocol & MainScreenRoutingLogic & MainScreenDataPassing)?
     
     private var displayData: MainScreen.DefaultListOfCities.ViewModel!
+    private var cityByCoordinate: MainScreen.DefaultListOfCities.CityInfo?
     
     @IBOutlet weak var tableViewOfCities: UITableView!
     @IBOutlet weak var infoTextView: CustomTextView!
@@ -57,6 +60,11 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     func setupGestureRecognizer() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(changeSize))
         infoTextView.addGestureRecognizer(gesture)
@@ -71,7 +79,7 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
     // MARK: Do something
     
     func selectRow(_ atIndex: Int) {
-        let request = MainScreen.DefaultListOfCities.Request(indexRow: atIndex)
+        let request = MainScreen.DefaultListOfCities.Request(indexRow: atIndex, cityByCoordinate: cityByCoordinate)
         interactor?.selectRow(request: request)
     }
     
@@ -81,6 +89,17 @@ class MainScreenViewController: UIViewController, MainScreenDisplayLogic {
             self.infoTextView.text = viewModel.fullInfo
         }
     }
+    
+    func displayWeatherByCoordinate(viewModel: MainScreen.DefaultListOfCities.ViewModel) {
+        displayData.cities?.append((viewModel.cities?.first)!)
+        cityByCoordinate = displayData.cities?.last
+        DispatchQueue.main.async {
+            self.tableViewOfCities.beginUpdates()
+            self.tableViewOfCities.insertRows(at: [IndexPath(row: (self.displayData.cities?.count ?? 0) - 1, section: 0)], with: .automatic)
+            self.tableViewOfCities.endUpdates()
+        }
+        
+    }
 }
 
 extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
@@ -88,13 +107,13 @@ extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: - DataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayData.cities.count
+        return displayData.cities?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: CityCell.reusableIdentifier, for: indexPath) as? CityCell {
-            cell.data = displayData.cities[indexPath.row]
+            cell.data = displayData.cities?[indexPath.row]
             return cell
         }
         
