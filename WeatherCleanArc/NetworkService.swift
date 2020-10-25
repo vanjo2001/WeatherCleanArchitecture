@@ -15,7 +15,6 @@ typealias WeatherComplition = (Result<Weather, Error>) -> ()
 
 
 protocol NetworkServiceProtocol: class {
-//    associatedtype Weather
     func getJSONData(completionHandler: @escaping WeatherComplition)
     var link: String { get set }
     var way: Way { get set }
@@ -33,8 +32,6 @@ enum UnitOfMeasurement: String {
 
 
 final class NetworkService: NetworkServiceProtocol {
-    
-//    typealias Weather = MainScreen.FetchWeather.Response.Weather
     
     static let key = "6485002c6ffd1d04876d0de28d75f187"
     static let unit: UnitOfMeasurement = .metric
@@ -55,9 +52,7 @@ final class NetworkService: NetworkServiceProtocol {
             link = "http://api.openweathermap.org/data/2.5/forecast?q=\(city)&units=\(NetworkService.unit.rawValue)&appid=\(NetworkService.key)"
         case .byCoordinate(let coordinate):
             link = "http://api.openweathermap.org/data/2.5/forecast?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(NetworkService.key)"
-            print(coordinate)
         }
-        print(link)
     }
     
     func getJSONData(completionHandler: @escaping WeatherComplition) {

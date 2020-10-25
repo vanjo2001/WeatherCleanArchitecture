@@ -16,7 +16,7 @@ class MainScreenPresenter: MainScreenPresentationLogic {
     
     weak var viewController: MainScreenDisplayLogic?
     
-    // MARK: Do something
+    // MARK: Present in special format
     
     func presentWeatherInfo(response: MainScreen.DefaultListOfCities.Response) {
         
@@ -30,7 +30,7 @@ class MainScreenPresenter: MainScreenPresentationLogic {
         
         let viewModel = MainScreen.DefaultListOfCities.ViewModel(cities: response.cities, fullInfo: fullInfo)
         
-        viewController?.displaySomething(viewModel: viewModel)
+        viewController?.displayList(viewModel: viewModel)
     }
     
     func presentWeatherByCoordinate(response: MainScreen.FetchWeather.Response) {

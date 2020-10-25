@@ -12,16 +12,14 @@ protocol UserLoginBusinessLogic {
 }
 
 protocol UserLoginDataStore {
-    //var name: String { get set }
 }
 
 class UserLoginInteractor: UserLoginBusinessLogic, UserLoginDataStore {
     
     var presenter: UserLoginPresentationLogic?
     private var worker: UserLoginWorker?
-    //var name: String = ""
     
-    // MARK: Do something
+    // MARK: Check text fields
     
     func textFieldsCheck(request: UserLogin.CheckFields.Request) {
         worker = UserLoginWorker()
@@ -37,7 +35,7 @@ class UserLoginInteractor: UserLoginBusinessLogic, UserLoginDataStore {
             response = UserLogin.CheckFields.Response(status: true)
         }
         
-        presenter?.presentSomething(response: response)
+        presenter?.presentButtonStatus(response: response)
     }
     
 }

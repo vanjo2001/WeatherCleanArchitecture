@@ -17,10 +17,5 @@ class MapPresenter: MapPresentationLogic {
     // MARK: Do something
     
     func presentSomething(response: Map.FetchWeatherByCoordinate.Response) {
-        
-        
-//        let viewModel = Map.FetchWeatherByCoordinate.ViewModel(weatherInfo: <#T##String#>)
-//        
-//        viewController?.displaySomething(viewModel: viewModel)
     }
 }

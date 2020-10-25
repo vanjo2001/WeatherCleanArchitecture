@@ -8,15 +8,15 @@
 import UIKit
 
 protocol UserLoginPresentationLogic {
-    func presentSomething(response: UserLogin.CheckFields.Response)
+    func presentButtonStatus(response: UserLogin.CheckFields.Response)
 }
 
 class UserLoginPresenter: UserLoginPresentationLogic {
     weak var viewController: UserLoginDisplayLogic?
     
-    // MARK: Do something
+    // MARK: Present button status
     
-    func presentSomething(response: UserLogin.CheckFields.Response) {
+    func presentButtonStatus(response: UserLogin.CheckFields.Response) {
         let viewModel = UserLogin.CheckFields.ViewModel(status: response.status)
         viewController?.reflectLoginStatus(viewModel: viewModel)
     }

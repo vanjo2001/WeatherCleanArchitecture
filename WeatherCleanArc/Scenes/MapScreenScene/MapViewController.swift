@@ -48,31 +48,15 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     
     func configurateGesture() {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(gesture:)))
-        mapView.delegate = self
         mapView.addGestureRecognizer(gestureRecognizer)
     }
     
     @objc private func handleTap(gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: mapView)
         let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-//
-//        let annotation = MKPointAnnotation()
-//        annotation.coordinate = coordinate
-//        annotation.title = "Target"
-//        mapView.addAnnotation(annotation)
-        
         
         router?.dataStore?.coordinate = coordinate
         router?.routeToMainScreen(segue: nil)
-    }
-    
-}
-
-
-extension MapViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("selected")
-        
     }
     
 }

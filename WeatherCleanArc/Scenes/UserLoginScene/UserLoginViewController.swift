@@ -84,10 +84,10 @@ final class UserLoginViewController: UIViewController, UserLoginDisplayLogic {
         interactor?.textFieldsCheck(request: request)
     }
     
-    // MARK: Do something
+    // MARK: Reflecting by bytton status
     
     func reflectLoginStatus(viewModel: UserLogin.CheckFields.ViewModel) {
-        //nameTextField.text = viewModel.name
+        
         if viewModel.status {
             loginButton.isEnabled = true
         } else {

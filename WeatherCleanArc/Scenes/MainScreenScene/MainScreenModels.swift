@@ -15,6 +15,7 @@ enum MainScreen {
         struct Request {
             var indexRow: Int
             var cityByCoordinate: CityInfo?
+            var cities: [CityInfo]?
         }
         
         struct Response: Decodable {

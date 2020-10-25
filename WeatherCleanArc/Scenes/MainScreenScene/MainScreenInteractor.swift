@@ -14,28 +14,23 @@ protocol MainScreenBusinessLogic {
 
 protocol MainScreenDataStore {
     var coordinate: CLLocationCoordinate2D? { get set }
-    var weatherByCoordinate: Weather? { get set }
-//    var cityByCoordinate: MainScreen.DefaultListOfCities.CityInfo? { get set }
+    var cities: [MainScreen.DefaultListOfCities.CityInfo]? { get set }
 }
 
 class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
     
-    var weatherByCoordinate: Weather? {
-        didSet {
-            print(weatherByCoordinate ?? "nil")
-        }
-    }
+    var cities: [MainScreen.DefaultListOfCities.CityInfo]?
+    
     
     var coordinate: CLLocationCoordinate2D? {
         didSet {
             getWeatherByCoordinate()
-            print("new \(coordinate ?? CLLocationCoordinate2D())")
         }
     }
     
     var presenter: MainScreenPresentationLogic?
-    var worker: MainScreenWorker?
-    var networkWorker: NetworkWorker?
+    private var worker: MainScreenWorker?
+    private var networkWorker: NetworkWorker?
     
     
     init(worker: MainScreenWorker = MainScreenWorker(), networkWorker: NetworkWorker = NetworkWorker()) {
@@ -43,21 +38,21 @@ class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
         self.networkWorker = networkWorker
     }
     
-    // MARK: Do something
+    // MARK: Select row
     
     func selectRow(request: MainScreen.DefaultListOfCities.Request) {
         worker = MainScreenWorker()
         networkWorker = NetworkWorker()
         
-        var cities: [MainScreen.DefaultListOfCities.CityInfo]!
         
-        
-        //Load from file
-        cities = worker?.loadJSONFromFile(fileName: "data", extensionOfFile: "json")
+        //Load from file if first time
+        if cities == nil {
+            cities = worker?.loadJSONFromFile(fileName: "data", extensionOfFile: "json")
+        }
         
         //Append city from map if exists
-        if let city = request.cityByCoordinate {
-            cities.append(city)
+        if let city = request.cityByCoordinate, city.city != cities?.last?.city {
+            cities?.append(city)
         }
         
         
@@ -67,10 +62,10 @@ class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
             //Limit is not targeted
             if status {
                 
-                let current = cities[request.indexRow]
-                networkWorker?.networkService.way = .byCity(city: current.city)
+                let current = cities?[request.indexRow]
+                networkWorker?.networkService.way = .byCity(city: current?.city ?? "nil")
                 
-                var response = packResponse(request: request, cities: cities, loadedWeather: nil)
+                var response = packResponse(request: request, cities: cities ?? [MainScreen.DefaultListOfCities.CityInfo](), loadedWeather: nil)
                 
                 self.networkWorker?.execute(id: Int64(request.indexRow)) { data in
                     
@@ -102,14 +97,12 @@ class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
             } else {
                 let weather = Weather.convert(weather: worker?.fineBy(predicate: "weatherId == \(request.indexRow)"))
                 
-                presenter?.presentWeatherInfo(response: packResponse(request: request, cities: cities, loadedWeather: weather))
-                
-                print("load from core data or something)")
+                presenter?.presentWeatherInfo(response: packResponse(request: request, cities: cities ?? [MainScreen.DefaultListOfCities.CityInfo](), loadedWeather: weather))
             }
         }
     }
     
-    func getWeatherByCoordinate() {
+    private func getWeatherByCoordinate() {
         
         networkWorker?.networkService.way = .byCoordinate(coordinate: coordinate ?? CLLocationCoordinate2D())
         networkWorker?.execute(id: nil, complitionHandler: { result in
@@ -123,7 +116,7 @@ class MainScreenInteractor: MainScreenBusinessLogic, MainScreenDataStore {
     }
     
     
-    func packResponse(request: MainScreen.DefaultListOfCities.Request,
+    private func packResponse(request: MainScreen.DefaultListOfCities.Request,
                       cities: [MainScreen.DefaultListOfCities.CityInfo],
                       loadedWeather: Weather?) -> MainScreen.DefaultListOfCities.Response {
         
